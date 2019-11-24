@@ -51,7 +51,7 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '仪表盘', icon: 'dashboard' }
     }]
   },
 
@@ -59,7 +59,6 @@ export const constantRoutes = [
     path: '/example',
     component: Layout,
     redirect: '/example/table',
-    name: 'Example',
     meta: { title: 'Example', icon: 'example' },
     children: [
       {
@@ -94,7 +93,6 @@ export const constantRoutes = [
     path: '/nested',
     component: Layout,
     redirect: '/nested/menu1',
-    name: 'Nested',
     meta: {
       title: 'Nested',
       icon: 'nested'
@@ -155,6 +153,74 @@ export const constantRoutes = [
       {
         path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
         meta: { title: 'External Link', icon: 'link' }
+      }
+    ]
+  },
+
+  {
+    path: '/material',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: '素材管理',
+        component: () => import('@/views/material/index'),
+        meta: { title: '素材管理', icon: 'example' }
+      }
+    ]
+  },
+
+  {
+    path: '/category',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: '类目管理',
+        component: () => import('@/views/category/index'),
+        meta: { title: '类目管理', icon: 'example' }
+      }
+    ]
+  },
+
+  {
+    path: '/user',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: '用户管理',
+        component: () => import('@/views/user/index'),
+        meta: { title: '用户管理', icon: 'example' }
+      }
+    ]
+  },
+
+  {
+    path: '/license',
+    component: Layout,
+    redirect: '/license/index',
+    meta: { title: '许可管理' },
+    children: [
+      {
+        path: 'index',
+        name: '许可管理',
+        component: () => import('@/views/license/index'),
+        meta: { title: '许可管理', icon: 'example' }
+      },
+      {
+        path: 'edit',
+        name: '编辑许可',
+        hidden: true,
+        component: () => import('@/views/license/edit'),
+        meta: { title: '编辑许可', icon: 'example' }
+      },
+      {
+        path: 'add',
+        name: '新增许可',
+        hidden: true,
+        component: () => import('@/views/license/edit'),
+        meta: { title: '新增许可', icon: 'example' }
       }
     ]
   },

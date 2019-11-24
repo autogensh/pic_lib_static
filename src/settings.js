@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '图库后台',
+  title: '图库管理后台',
 
   /**
    * @type {boolean} true | false

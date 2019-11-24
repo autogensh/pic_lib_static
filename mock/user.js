@@ -13,13 +13,17 @@ const users = {
     roles: ['admin'],
     introduction: 'I am a super administrator',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    name: 'Super Admin'
+    name: 'Super Admin',
+    lastLoginTime: '1972-12-04 09:08:09',
+    lastLoginIP: '192.168.1.111'
   },
   'editor-token': {
     roles: ['editor'],
     introduction: 'I am an editor',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-    name: 'Normal Editor'
+    name: 'Normal Editor',
+    lastLoginTime: '1972-12-04 09:08:09',
+    lastLoginIP: '192.168.1.111'
   }
 }
 
@@ -78,6 +82,28 @@ export default [
       return {
         code: 20000,
         data: 'success'
+      }
+    }
+  },
+
+  // user list
+  {
+    url: '/user/list',
+    type: 'get',
+    response: config => {
+      const userList = {
+        items: []
+      }
+      for (const i in users) {
+        userList.items.push(users[i])
+      }
+      const items = userList.items
+      return {
+        code: 20000,
+        data: {
+          total: items.length,
+          items: items
+        }
       }
     }
   }
