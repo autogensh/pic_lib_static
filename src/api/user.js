@@ -2,15 +2,15 @@ import request from '@/utils/request'
 
 export function login(data) {
   return request({
-    url: '/user/login',
+    url: '/admin/login',
     method: 'post',
-    data
+    data: 'username=' + data.username + '&password=' + data.password
   })
 }
 
 export function getInfo(token) {
   return request({
-    url: '/user/info',
+    url: '/admin/user/info',
     method: 'get',
     params: { token }
   })
@@ -18,15 +18,23 @@ export function getInfo(token) {
 
 export function logout() {
   return request({
-    url: '/user/logout',
+    url: '/admin/logout',
     method: 'post'
   })
 }
 
-export function getList(token) {
+export function list() {
   return request({
-    url: '/user/list',
-    method: 'get',
-    params: { token }
+    url: '/admin/user/list',
+    method: 'get'
+  })
+}
+
+export function lock(row) {
+  row.isLocked = !row.isLocked
+  return request({
+    url: '/admin/user/lock',
+    method: 'post',
+    data: row
   })
 }

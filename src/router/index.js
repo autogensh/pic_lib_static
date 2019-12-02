@@ -166,6 +166,20 @@ export const constantRoutes = [
         name: '素材管理',
         component: () => import('@/views/material/index'),
         meta: { title: '素材管理', icon: 'example' }
+      },
+      {
+        path: 'edit',
+        name: '修改素材',
+        hidden: true,
+        component: () => import('@/views/material/edit'),
+        meta: { title: '修改素材', icon: 'example' }
+      },
+      {
+        path: 'add',
+        name: '上传素材',
+        hidden: true,
+        component: () => import('@/views/material/edit'),
+        meta: { title: '上传素材', icon: 'example' }
       }
     ]
   },
@@ -173,16 +187,30 @@ export const constantRoutes = [
   {
     path: '/category',
     component: Layout,
+    redirect: '/category/index',
     children: [
       {
         path: 'index',
         name: '类目管理',
         component: () => import('@/views/category/index'),
         meta: { title: '类目管理', icon: 'example' }
+      },
+      {
+        path: 'edit',
+        name: '编辑类目',
+        hidden: true,
+        component: () => import('@/views/category/edit'),
+        meta: { title: '编辑类目', icon: 'example' }
+      },
+      {
+        path: 'add',
+        name: '新增类目',
+        hidden: true,
+        component: () => import('@/views/category/edit'),
+        meta: { title: '新增类目', icon: 'example' }
       }
     ]
   },
-
   {
     path: '/user',
     component: Layout,
@@ -200,7 +228,6 @@ export const constantRoutes = [
     path: '/license',
     component: Layout,
     redirect: '/license/index',
-    meta: { title: '许可管理' },
     children: [
       {
         path: 'index',

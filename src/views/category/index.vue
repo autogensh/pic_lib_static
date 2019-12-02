@@ -32,7 +32,7 @@
           {{ scope.row.materialCount }}
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="状态" width="110" align="center">
+      <el-table-column class-name="status-col" label="状态" width="100" align="center">
         <template slot-scope="scope">
           <el-tag size="small" :type="scope.row.isDeleted | statusFilter">{{ scope.row.isDeleted | deleteFilter }}</el-tag>
         </template>
@@ -43,12 +43,18 @@
           <span>{{ scope.row.updateAt }}</span>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="操作" width="200">
+        <template slot-scope="scope">
+          <el-button type="primary" size="mini" icon="el-icon-edit" @click="onEdit(scope.row)">编辑</el-button>
+          <el-button type="danger" size="mini" icon="el-icon-delete" @click="onDel(scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>
 
 <script>
-import { getList } from '@/api/category'
+import { getCategoryList, delCategory } from '@/api/category'
 
 export default {
   filters: {
@@ -67,6 +73,7 @@ export default {
       }
     }
   },
+  inject: ['reload'],
   data() {
     return {
       list: null,
@@ -79,13 +86,23 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getList().then(response => {
-        this.list = response.data.items
+      getCategoryList({}, (res) => {
+        this.list = res.items
         this.listLoading = false
       })
     },
     onAdd() {
-
+      this.$router.push({ name: '新增类目', params: { row: null }})
+    },
+    onEdit(row) {
+      this.$router.push({ name: '编辑类目', params: { row: row }})
+    },
+    onDel(row) {
+      delCategory(row, (res) => {
+        if (res.code === 20000) {
+          this.reload()
+        }
+      })
     }
   }
 }

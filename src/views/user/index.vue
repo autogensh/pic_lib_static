@@ -16,12 +16,12 @@
           {{ scope.$index + 1 }}
         </template>
       </el-table-column>
-      <el-table-column label="用户名" width="110">
+      <el-table-column :show-overflow-tooltip="true" align="center" label="用户名" width="100">
         <template slot-scope="scope">
-          {{ scope.row.name }}
+          {{ scope.row.username }}
         </template>
       </el-table-column>
-      <el-table-column :show-overflow-tooltip="true" label="描述">
+      <el-table-column :show-overflow-tooltip="true" align="center" label="描述">
         <template slot-scope="scope">
           {{ scope.row.introduction }}
         </template>
@@ -31,26 +31,33 @@
           <img :src="scope.row.avatar" width="80px" alt="头像">
         </template>
       </el-table-column>
-      <el-table-column :show-overflow-tooltip="true" class-name="status-col" label="角色" width="110" align="center">
+      <el-table-column :show-overflow-tooltip="true" class-name="status-col" label="角色" width="80" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.roles | rolesFilter }}</span>
+          <span>{{ scope.row.role | roleFilter }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="lastLoginTime" label="上次登录时间" width="180">
+      <el-table-column align="center" prop="lastLoginTime" label="最后登录时间" width="180">
         <template slot-scope="scope">
           <i class="el-icon-time" />
           <span>{{ scope.row.lastLoginTime }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="lastLoginIP" label="上次登录IP" width="140">
+      <el-table-column align="center" prop="lastLoginIP" label="最后登录IP" width="140">
         <template slot-scope="scope">
           <i class="el-icon-location" />
           <span>{{ scope.row.lastLoginIP }}</span>
         </template>
       </el-table-column>
+      <el-table-column align="center" prop="status" label="状态" width="100">
+        <template slot-scope="scope">
+          <el-tag v-if="scope.row.isLocked" type="danger">锁定</el-tag>
+          <el-tag v-if="!scope.row.isLocked" type="success">正常</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column align="center" label="操作" width="100">
         <template slot-scope="scope">
-          <el-button type="danger" size="mini" icon="el-icon-remove" :data-id="scope.row.id">锁定</el-button>
+          <el-button v-if="scope.row.isLocked" type="success" size="mini" icon="el-icon-circle-check" @click="onLock(scope.row)">解锁</el-button>
+          <el-button v-if="!scope.row.isLocked" type="danger" size="mini" icon="el-icon-remove" @click="onLock(scope.row)">锁定</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -58,20 +65,16 @@
 </template>
 
 <script>
-import { getList } from '@/api/user'
+import { list, lock } from '@/api/user'
 
 export default {
   filters: {
-    rolesFilter(roles) {
-      var r = []
-      for (var i in roles) {
-        if (roles[i].indexOf('admin') >= 0) {
-          r.push('管理员')
-        } else if (roles[i].indexOf('editor') >= 0) {
-          r.push('普通用户')
-        }
+    roleFilter(role) {
+      if (role.indexOf('ADMIN') >= 0) {
+        return '管理员'
+      } else if (role.indexOf('USER') >= 0) {
+        return '普通用户'
       }
-      return r.join(',')
     }
   },
   data() {
@@ -86,10 +89,13 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getList().then(response => {
-        this.list = response.data.items
+      list().then(response => {
+        this.list = response.items
         this.listLoading = false
       })
+    },
+    onLock(row) {
+      lock(row)
     }
   }
 }

@@ -12,7 +12,7 @@
       style="width: 100%"
       size="medium"
     >
-      <el-table-column type="expand">
+      <el-table-column type="expand" label="展开" width="60">
         <template slot-scope="scope">
           <el-form label-position="left" inline class="demo-table-expand">
             <el-form-item>
@@ -32,9 +32,15 @@
           {{ scope.row.title }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作" width="100">
+      <el-table-column label="修改时间" width="180">
+        <template slot-scope="scope">
+          {{ scope.row.updateAt }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="操作" width="200">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" icon="el-icon-edit" @click="onEdit(scope.row)">编辑</el-button>
+          <el-button type="danger" size="mini" icon="el-icon-delete" @click="onDel(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -42,7 +48,7 @@
 </template>
 
 <script>
-import { getList } from '@/api/license'
+import { getLicenseList, delLicense } from '@/api/license'
 
 export default {
   filters: {
@@ -55,6 +61,7 @@ export default {
       return statusMap[status]
     }
   },
+  inject: ['reload'],
   data() {
     return {
       list: null,
@@ -67,8 +74,8 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getList().then(response => {
-        this.list = response.data.items
+      getLicenseList({}, response => {
+        this.list = response.items
         this.listLoading = false
       })
     },
@@ -77,6 +84,13 @@ export default {
     },
     onEdit(row) {
       this.$router.push({ name: '编辑许可', params: { row: row }})
+    },
+    onDel(row) {
+      delLicense(row, (res) => {
+        if (res.code === 20000) {
+          this.reload()
+        }
+      })
     }
   }
 }

@@ -1,16 +1,18 @@
 import request from '@/utils/request'
 
-export function getList(params) {
+export function getLicenseList(params, cb) {
   return request({
-    url: '/license/list',
+    url: '/admin/license/list',
     method: 'get',
     params
+  }).then((res) => {
+    cb(res)
   })
 }
 
-export function editLicense(data, cb) {
+export function updateLicense(data, cb) {
   return request({
-    url: '/license/edit',
+    url: '/admin/license/update',
     method: 'post',
     data
   }).then((res) => {
@@ -18,13 +20,12 @@ export function editLicense(data, cb) {
   })
 }
 
-export function addLicense(data, cb) {
+export function delLicense(data, cb) {
   return request({
-    url: '/license/add',
+    url: '/admin/license/del',
     method: 'post',
     data
   }).then((res) => {
     cb(res)
   })
 }
-
