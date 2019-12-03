@@ -71,6 +71,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit(form)">保存</el-button>
+        <el-button @click="onCancel()">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -248,6 +249,9 @@ export default {
         this.showUpload()
       }
       this.$message.warning('最多只能上传' + this.limit + '张素材哦!')
+    },
+    onCancel() {
+      this.$router.go(-1)
     },
     onSubmit(data) {
       if (data.materialImgs === '') {
