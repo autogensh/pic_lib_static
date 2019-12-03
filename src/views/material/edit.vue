@@ -61,6 +61,14 @@
         </el-dialog>
         <span style="color:#888">* 暂时只支持上传{{ limit }}张素材</span>
       </el-form-item>
+      <el-form-item label="标签" prop="tags">
+        <el-input
+          v-model="form.tags"
+          maxlength="60"
+          show-word-limit
+        />
+        <span style="color:#888">* 请用小写逗号分隔, 否则会被看作同一个标签</span>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit(form)">保存</el-button>
       </el-form-item>
@@ -81,18 +89,14 @@ export default {
     var _catId = ''
     var _desc = ''
     var _license = ''
-    var _materialImgs = ''
-    if (!this.$route.params.row) {
-      if (this.$route.params.path === '/material/edit') {
-        this.$router.back(-1)
-      }
-    } else {
+    var _tags = ''
+    if (this.$route.params.row) {
       _id = this.$route.params.row.id
       _catId = this.$route.params.row.catId
       _name = this.$route.params.row.materialName
       _desc = this.$route.params.row.desc
       _license = this.$route.params.row.licenseId
-      _materialImgs = ''
+      _tags = this.$route.params.row.tags || ''
     }
     return {
       categoryList: null,
@@ -111,7 +115,8 @@ export default {
         name: _name,
         desc: _desc,
         license: _license,
-        materialImgs: _materialImgs
+        materialImgs: '',
+        tags: _tags
       },
       rules: {
         catId: [{ required: true, message: '请选择一个素材分类', trigger: ['blur', 'change'] }],
@@ -127,7 +132,7 @@ export default {
   methods: {
     fetchData() {
       this.formLoading = true
-      if (this.$route.fullPath === '/material/edit') {
+      if (this.$route.params.row) {
         this.maxStep = 3
         getMaterialFiles(this.form.id, response => {
           for (var i in response.items) {
