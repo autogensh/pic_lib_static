@@ -24,7 +24,7 @@
       </el-table-column>
       <el-table-column label="创建者" width="110" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.createBy }}</span>
+          <span>{{ scope.row.username }}</span>
         </template>
       </el-table-column>
       <el-table-column label="素材数" width="110" align="center">
