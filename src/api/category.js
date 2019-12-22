@@ -10,6 +10,26 @@ export function getCategoryList(params, cb) {
   })
 }
 
+export function getCategoryList2(params, cb) {
+  return request({
+    url: '/admin/category/list2',
+    method: 'get',
+    params
+  }).then((res) => {
+    cb(res)
+  })
+}
+
+export function moveCategory(data, cb) {
+  return request({
+    url: '/admin/category/move',
+    method: 'post',
+    data
+  }).then((res) => {
+    cb(res)
+  })
+}
+
 export function updateCategory(data, cb) {
   return request({
     url: '/admin/category/update',

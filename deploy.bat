@@ -1,2 +1,2 @@
 
-xcopy .\dist\* D:\nginx-1.17.5\html /e /c /y /h /r
+xcopy .\dist\* c:\server\nginx-1.17.6\html\admin\ /e /c /y /h /r
